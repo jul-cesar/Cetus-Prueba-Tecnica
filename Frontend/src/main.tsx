@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router";
 import { Toaster } from "sonner";
 import App from "./App.tsx";
 import "./index.css";
+import { ThemeProvider } from "./components/theme-provider.tsx";
 
 const queryClient = new QueryClient({});
 
@@ -12,7 +13,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <App />
+        </ThemeProvider>
       </QueryClientProvider>
       <Toaster />
     </BrowserRouter>
