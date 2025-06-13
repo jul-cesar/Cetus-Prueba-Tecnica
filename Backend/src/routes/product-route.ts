@@ -4,6 +4,7 @@ import {
   createProduct,
   getAllProducts,
   getProductById,
+  ToggleProductStatus,
   updateProduct,
 } from "../services/productos-service.js";
 import type { InsertProducto } from "../types/productos-types.js";
@@ -65,11 +66,29 @@ productRoute.put("/:id", async (c) => {
     }
     return c.json(updatedProduct.data, 200);
   } catch (error) {
+    console.error("Error actualizando producto:", error);
     const prismaError = handlePrismaError(error);
     console.error("Error actualizando producto:", prismaError);
     return c.json({ error: prismaError, message: "Error al actualizar el producto" }, 500);
   }
 });
+
+productRoute.patch("/:id/toggle-status", async (c) => {
+  const id = c.req.param("id");
+  try {
+    
+    const updatedProduct = await ToggleProductStatus(id);
+    if (!updatedProduct.success) {
+      return c.json({ error: updatedProduct.message }, 404);
+    }
+    return c.json({ message: "Estado del producto actualizado correctamente" }, 200);
+  } catch (error) {
+    const prismaError = handlePrismaError(error);
+    console.error("Error actualizando estado del producto:", prismaError);
+    return c.json({ error: prismaError, message: "Error al actualizar el estado del producto" }, 500);
+  }
+}
+);
 
 productRoute.delete("/:id", async (c) => {
   const id = c.req.param("id");

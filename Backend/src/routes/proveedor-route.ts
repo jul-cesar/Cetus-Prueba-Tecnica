@@ -85,7 +85,7 @@ proveedorRoute.put("/:id", async (c) => {
 proveedorRoute.delete("/:id", async (c) => {
   const id = c.req.param("id");
   try {
-    const deletedProveedor = await updateProveedor(id, { activo: false });
+    const deletedProveedor = await updateProveedor(id, { estado: "Inactivo" });
     if (!deletedProveedor.success) {
       return c.json({ error: deletedProveedor.message }, 404);
     }

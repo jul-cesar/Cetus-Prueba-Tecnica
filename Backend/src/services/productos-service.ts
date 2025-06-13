@@ -7,7 +7,9 @@ import type {
 import type { Response } from "../types/response.js";
 
 export const getAllProducts = async (): Promise<Response<Producto[]>> => {
-  const productos = await prisma.producto.findMany({});
+  const productos = await prisma.producto.findMany({
+    orderBy: { nombre: "asc" },
+  });
   if (!productos || productos.length === 0) {
     return {
       success: false,
@@ -67,3 +69,30 @@ export const updateProduct = async (
     data: producto,
   };
 };
+
+export const ToggleProductStatus = async (
+  id: string
+): Promise<Response<Producto>> => {
+  const producto = await prisma.producto.findUnique({
+    where: { id },
+  });
+  if (!producto) {
+    return {
+      success: false,
+      message: `Product with ID ${id} not found`,
+    };
+  }
+
+  const updatedProducto = await prisma.producto.update({
+    where: { id },
+    data: {
+      estado: producto.estado === "Activo" ? "Inactivo" : "Activo",
+    },
+  });
+
+  return {
+    success: true,
+    message: "Product status toggled successfully",
+    data: updatedProducto,
+  };
+}
