@@ -1,10 +1,11 @@
 import { Hono } from "hono";
 import { handlePrismaError } from "../../lib/PrismaErrorHandler.js";
 import {
-    createProveedor,
-    getProveedorById,
-    getProveedores,
-    updateProveedor,
+  createProveedor,
+  getProveedorById,
+  getProveedores,
+  toggleProveedorStatus,
+  updateProveedor,
 } from "../services/proveedores-service.js";
 import type { UpdateProveedor } from "../types/proveedores-types.js";
 
@@ -62,6 +63,27 @@ proveedorRoute.post("/", async (c) => {
     );
   }
 });
+
+proveedorRoute.patch("/:id/toggle-status", async (c) => {
+  const id = c.req.param("id");
+  try {
+    
+
+    const updatedProveedor = await toggleProveedorStatus(id);
+    if (!updatedProveedor.success) {
+      return c.json({ error: updatedProveedor.message }, 400);
+    }
+    return c.json(updatedProveedor.data, 200);
+  } catch (error) {
+    const prismaError = handlePrismaError(error);
+    console.error("Error toggling proveedor status:", prismaError);
+    return c.json(
+      { error: prismaError, message: "Error al cambiar el estado del proveedor" },
+      500
+    );
+  }
+}
+);
 
 proveedorRoute.put("/:id", async (c) => {
   const id = c.req.param("id");

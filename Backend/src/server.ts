@@ -3,6 +3,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { productRoute } from "./routes/product-route.js";
 import { proveedorRoute } from "./routes/proveedor-route.js";
+import { recepcionesRoute } from "./routes/recepciones-route.js";
 
 export const app = new Hono().basePath("/api/v1");
 
@@ -18,5 +19,6 @@ app.use(
 app.use(logger());
 app.route("/productos", productRoute);
 app.route("/proveedores", proveedorRoute); 
+app.route("/recepciones", recepcionesRoute); 
 
 export default app;

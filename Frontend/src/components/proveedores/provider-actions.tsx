@@ -1,3 +1,6 @@
+"use client";
+
+import { toggleProveedorStatus } from "@/api/Proveedores";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,52 +10,36 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import type { Proveedor } from "@/Types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Check, Edit, MoreHorizontal, X } from "lucide-react";
 import { useState } from "react";
-
-import { deleteProduct, toggleProductStatus } from "@/api/Productos";
-import type { Product } from "@/Types";
 import { toast } from "sonner";
-import { ProductDialog } from "./product-dialog";
+import { ProviderDialog } from "./provider-dialog";
 
-interface ProductActionsProps {
-  product: Product;
+interface ProviderActionsProps {
+  provider: Proveedor;
 }
 
-export function ProductActions({ product }: ProductActionsProps) {
+export function ProviderActions({ provider }: ProviderActionsProps) {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const queryClient = useQueryClient();
 
-  const { mutate: deleteProductMutation } = useMutation({
+  const { mutate: toggleProviderStatusMutation } = useMutation({
     mutationFn: (id: string) => {
-      return deleteProduct(id);
+      return toggleProveedorStatus(id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
-      toast("El producto ha sido desactivado correctamente");
+      queryClient.invalidateQueries({ queryKey: ["proveedores"] });
+      toast("El proveedor ha sido desactivado correctamente");
     },
   });
 
-  const { mutate: updateStatusMutation } = useMutation({
-    mutationFn: (id: string) => {
-      return toggleProductStatus(id);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
-      toast("El estado del producto ha sido actualizado correctamente");
-    },
-  });
-
-  const handleDelete = () => {
-    deleteProductMutation(product.id);
+  const handleToggleStatus = () => {
+    toggleProviderStatusMutation(provider.id);
+    queryClient.invalidateQueries({ queryKey: ["proveedores"] });
     setShowDeleteDialog(false);
-  };
-
-  const handleStatusChange = () => {
-    updateStatusMutation(product.id);
   };
 
   return (
@@ -71,8 +58,11 @@ export function ProductActions({ product }: ProductActionsProps) {
             <Edit className="mr-2 h-4 w-4" />
             Editar
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleStatusChange}>
-            {product.estado === "Activo" ? (
+          <DropdownMenuItem
+            onClick={handleToggleStatus}
+            className="text-destructive focus:text-destructive"
+          >
+            {provider.estado === "Activo" ? (
               <>
                 <X className="mr-2 h-4 w-4" />
                 Desactivar
@@ -87,10 +77,10 @@ export function ProductActions({ product }: ProductActionsProps) {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <ProductDialog
+      <ProviderDialog
         open={showEditDialog}
         onOpenChange={setShowEditDialog}
-        product={product}
+        provider={provider}
       />
     </>
   );

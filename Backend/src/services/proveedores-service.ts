@@ -4,7 +4,10 @@ import type { UpdateProveedor } from "../types/proveedores-types.js";
 import type { Response } from "../types/response.js";
 
 export const getProveedores = async (): Promise<Response<Proveedor[]>> => {
-  const proveedores = await prisma.proveedor.findMany();
+  const proveedores = await prisma.proveedor.findMany({
+    orderBy: { nombre: "asc" },
+    
+  });
   if (!proveedores || proveedores.length === 0) {
     return {
       success: false,
@@ -49,6 +52,31 @@ export const createProveedor = async (
     data: proveedor,
   };
 };
+
+export const toggleProveedorStatus = async (
+  id: string
+): Promise<Response<Proveedor>> => {
+  const proveedor = await prisma.proveedor.findUnique({ 
+    where: { id },
+  }); 
+  if (!proveedor) {
+    return {
+      success: false,
+      message: `Provider with ID ${id} not found`,
+    };
+  }
+  const updatedProveedor = await prisma.proveedor.update({
+    where: { id },
+    data: {
+      estado: proveedor.estado === "Activo" ? "Inactivo" : "Activo",
+    }
+  });
+  return {
+    success: true,
+    message: `Provider status toggled successfully`,
+    data: updatedProveedor,
+  };
+}
 
 export const updateProveedor = async (
   id: string,
