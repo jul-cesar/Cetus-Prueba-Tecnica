@@ -23,7 +23,7 @@ interface ProviderActionsProps {
 
 export function ProviderActions({ provider }: ProviderActionsProps) {
   const [showEditDialog, setShowEditDialog] = useState(false);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
   const queryClient = useQueryClient();
 
   const { mutate: toggleProviderStatusMutation } = useMutation({
@@ -39,7 +39,6 @@ export function ProviderActions({ provider }: ProviderActionsProps) {
   const handleToggleStatus = () => {
     toggleProviderStatusMutation(provider.id);
     queryClient.invalidateQueries({ queryKey: ["proveedores"] });
-    setShowDeleteDialog(false);
   };
 
   return (

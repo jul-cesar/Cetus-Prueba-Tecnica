@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma.js";
-import type { InsertRecepcion } from "../types/recepciones-types.js";
+import type { InsertRecepcion, UpdateRecepcion } from "../types/recepciones-types.js";
 
 export const getRecepciones = async () => {
   const recepciones = await prisma.recepcion.findMany({
@@ -70,3 +70,29 @@ export const deleteRecepcion = async (id: string) => {
     data: recepcion,
   };
 }   
+
+
+export const updateRecepcion = async (id: string, data: UpdateRecepcion) => {
+  const existingRecepcion = await prisma.recepcion.findUnique({
+    where: { id },
+  });
+  if (!existingRecepcion) {
+    return {
+      success: false,
+      message: `Recepcion with ID ${id} not found`,
+    };
+  }
+  const recepcion = await prisma.recepcion.update({
+    where: { id },
+    data,
+    include: {
+      proveedor: true,
+      producto: true,
+    },
+  });
+  return {
+    success: true,
+    message: "Recepcion updated successfully",
+    data: recepcion,
+  };
+}

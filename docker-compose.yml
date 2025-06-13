@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  backend:
+    build: ./Backend
+    container_name: cetus-backend
+    env_file:
+      - ./Backend/.env
+    ports:
+      - '3001:3001'
+    restart: always
+
+  frontend:
+    build: ./Frontend
+    container_name: cetus-frontend
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend
+    restart: always

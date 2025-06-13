@@ -12,7 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Check, Edit, MoreHorizontal, X } from "lucide-react";
 import { useState } from "react";
 
-import { deleteProduct, toggleProductStatus } from "@/api/Productos";
+import { toggleProductStatus } from "@/api/Productos";
 import type { Product } from "@/Types";
 import { toast } from "sonner";
 import { ProductDialog } from "./product-dialog";
@@ -23,18 +23,8 @@ interface ProductActionsProps {
 
 export function ProductActions({ product }: ProductActionsProps) {
   const [showEditDialog, setShowEditDialog] = useState(false);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const queryClient = useQueryClient();
 
-  const { mutate: deleteProductMutation } = useMutation({
-    mutationFn: (id: string) => {
-      return deleteProduct(id);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
-      toast("El producto ha sido desactivado correctamente");
-    },
-  });
+  const queryClient = useQueryClient();
 
   const { mutate: updateStatusMutation } = useMutation({
     mutationFn: (id: string) => {
@@ -45,11 +35,6 @@ export function ProductActions({ product }: ProductActionsProps) {
       toast("El estado del producto ha sido actualizado correctamente");
     },
   });
-
-  const handleDelete = () => {
-    deleteProductMutation(product.id);
-    setShowDeleteDialog(false);
-  };
 
   const handleStatusChange = () => {
     updateStatusMutation(product.id);

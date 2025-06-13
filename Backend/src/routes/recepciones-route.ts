@@ -1,11 +1,16 @@
 import { Hono } from "hono";
+import { handlePrismaError } from "../../lib/PrismaErrorHandler.js";
 import {
   createRecepcion,
   deleteRecepcion,
   getRecepcionById,
   getRecepciones,
+  updateRecepcion,
 } from "../services/recepciones-service.js";
-import type { InsertRecepcion } from "../types/recepciones-types.js";
+import type {
+  InsertRecepcion,
+  UpdateRecepcion,
+} from "../types/recepciones-types.js";
 import { recepcionesValidator } from "../validators/recepciones-validator.js";
 
 export const recepcionesRoute = new Hono();
@@ -19,8 +24,15 @@ recepcionesRoute.get("/", async (c) => {
 
     return c.json(recepciones.data, 200);
   } catch (error) {
-    console.error("Error fetching recepciones:", error);
-    return c.json({ error: "Error al obtener las recepciones" }, 500);
+    const prismaError = handlePrismaError(error);
+    console.error("Error actualizando estado del producto:", prismaError);
+    return c.json(
+      {
+        error: prismaError,
+        message: "Error al actualizar el estado del producto",
+      },
+      500
+    );
   }
 });
 
@@ -33,8 +45,15 @@ recepcionesRoute.get("/:id", async (c) => {
     }
     return c.json(recepcion.data, 200);
   } catch (error) {
-    console.error("Error fetching recepcion:", error);
-    return c.json({ error: "Error al obtener la recepcion" }, 500);
+    const prismaError = handlePrismaError(error);
+    console.error("Error actualizando estado del producto:", prismaError);
+    return c.json(
+      {
+        error: prismaError,
+        message: "Error al actualizar el estado del producto",
+      },
+      500
+    );
   }
 });
 
@@ -47,25 +66,58 @@ recepcionesRoute.post("/", recepcionesValidator, async (c) => {
     }
     return c.json(newRecepcion.data, 201);
   } catch (error) {
-    console.error("Error creating recepcion:", error);
-    return c.json({ error: "Error al crear la recepcion" }, 500);
+    const prismaError = handlePrismaError(error);
+    console.error("Error actualizando estado del producto:", prismaError);
+    return c.json(
+      {
+        error: prismaError,
+        message: "Error al actualizar el estado del producto",
+      },
+      500
+    );
   }
 });
 
 recepcionesRoute.delete("/:id", async (c) => {
   const id = c.req.param("id");
   try {
-    
-    
-   const del = await deleteRecepcion(id);
+    const del = await deleteRecepcion(id);
     if (!del.success) {
       return c.json({ error: del.message }, 404);
     }
 
     return c.json({ message: "Recepcion deleted successfully" }, 200);
   } catch (error) {
-    console.error("Error deleting recepcion:", error);
-    return c.json({ error: "Error al eliminar la recepcion" }, 500);
+    const prismaError = handlePrismaError(error);
+    console.error("Error actualizando estado del producto:", prismaError);
+    return c.json(
+      {
+        error: prismaError,
+        message: "Error al actualizar el estado del producto",
+      },
+      500
+    );
   }
-}   
-);
+});
+
+recepcionesRoute.put("/:id", recepcionesValidator, async (c) => {
+  const id = c.req.param("id");
+  try {
+    const recepcionData: UpdateRecepcion = await c.req.json();
+    const updatedRecepcion = await updateRecepcion(id, recepcionData);
+    if (!updatedRecepcion.success) {
+      return c.json({ error: updatedRecepcion.message }, 400);
+    }
+    return c.json(updatedRecepcion.data, 200);
+  } catch (error) {
+    const prismaError = handlePrismaError(error);
+    console.error("Error actualizando estado del producto:", prismaError);
+    return c.json(
+      {
+        error: prismaError,
+        message: "Error al actualizar el estado del producto",
+      },
+      500
+    );
+  }
+});

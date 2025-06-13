@@ -90,6 +90,9 @@ export function ProviderDialog({
         onOpenChange(false);
         form.reset();
       },
+      onError: (error: any) => {
+        toast.error(`Error al crear el proveedor: ${error.message}`);
+      },
     }
   );
 

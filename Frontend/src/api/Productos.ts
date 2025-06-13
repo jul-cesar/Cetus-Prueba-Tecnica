@@ -26,7 +26,8 @@ export const createProduct = async (product: InsertProduct) => {
     body: JSON.stringify(product),
   });
   if (!response.ok) {
-    throw new Error("Failed to create product");
+    const error = await response.json();
+    throw new Error(error.error || "Failed to create product");
   }
   return response.json();
 };

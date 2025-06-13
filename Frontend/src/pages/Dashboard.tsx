@@ -1,7 +1,16 @@
+import { getStats } from "@/api/Dashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { DashboardStats } from "@/Types";
+import { useQuery } from "@tanstack/react-query";
 import { AlertCircle, ClipboardList, Package2, Users } from "lucide-react";
 
 export default function DashboardPage() {
+  const { data: stats, isLoading } = useQuery<DashboardStats>({
+    queryKey: ["dashboard-stats"],
+    queryFn: () => getStats(),
+  });
+
   return (
     <div className="space-y-6">
       <div>
@@ -20,8 +29,20 @@ export default function DashboardPage() {
             <Package2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">120</div>
-            <p className="text-xs text-muted-foreground">+5 en el último mes</p>
+            {isLoading ? (
+              <Skeleton className="h-8 w-20" />
+            ) : (
+              <div className="text-2xl font-bold">
+                {stats?.totalProducts || 0}
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground">
+              {isLoading ? (
+                <Skeleton className="h-4 w-32" />
+              ) : (
+                `${stats?.totalActiveProducts || 0} productos activos`
+              )}
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -32,8 +53,20 @@ export default function DashboardPage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">24</div>
-            <p className="text-xs text-muted-foreground">+2 en el último mes</p>
+            {isLoading ? (
+              <Skeleton className="h-8 w-20" />
+            ) : (
+              <div className="text-2xl font-bold">
+                {stats?.totalProveedores || 0}
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground">
+              {isLoading ? (
+                <Skeleton className="h-4 w-32" />
+              ) : (
+                `${stats?.totalActiveProveedores || 0} proveedores activos`
+              )}
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -42,23 +75,47 @@ export default function DashboardPage() {
             <ClipboardList className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">45</div>
+            {isLoading ? (
+              <Skeleton className="h-8 w-20" />
+            ) : (
+              <div className="text-2xl font-bold">
+                {stats?.totalRecepciones || 0}
+              </div>
+            )}
             <p className="text-xs text-muted-foreground">
-              +12 en el último mes
+              {isLoading ? (
+                <Skeleton className="h-4 w-32" />
+              ) : (
+                "Total de recepciones registradas"
+              )}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Productos por vencer
+              Productos Activos
             </CardTitle>
             <AlertCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">8</div>
+            {isLoading ? (
+              <Skeleton className="h-8 w-20" />
+            ) : (
+              <div className="text-2xl font-bold">
+                {stats?.totalActiveProducts || 0}
+              </div>
+            )}
             <p className="text-xs text-muted-foreground">
-              En los próximos 30 días
+              {isLoading ? (
+                <Skeleton className="h-4 w-32" />
+              ) : (
+                `${(
+                  ((stats?.totalActiveProducts || 0) /
+                    (stats?.totalProducts || 1)) *
+                  100
+                ).toFixed(0)}% del total`
+              )}
             </p>
           </CardContent>
         </Card>

@@ -49,7 +49,7 @@ export function Sidebar({ open, onOpenChange }: SidebarProps) {
           <div className="flex h-14 items-center border-b px-4">
             <Link to="/" className="flex items-center gap-2 font-semibold">
               <Package2 className="h-6 w-6 text-primary" />
-              <span className="text-lg">PharmaSys</span>
+              <span className="text-lg">PharmaCeltus                  </span>
             </Link>
           </div>
           <ScrollArea className="flex-1 py-2">

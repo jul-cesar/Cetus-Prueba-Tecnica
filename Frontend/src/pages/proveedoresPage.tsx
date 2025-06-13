@@ -3,17 +3,15 @@ import { columns } from "@/components/proveedores/columns";
 import { DataTable } from "@/components/proveedores/data-table";
 import { ProviderDialog } from "@/components/proveedores/provider-dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
 export default function ProvidersPage() {
   const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState("");
 
   const { data: providers = [], isLoading } = useQuery({
-    queryKey: ["proveedores", search],
+    queryKey: ["proveedores"],
     queryFn: () => getProveedores(),
   });
 
@@ -30,15 +28,6 @@ export default function ProvidersPage() {
           <Plus className="mr-2 h-4 w-4" />
           Nuevo Proveedor
         </Button>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <Input
-          placeholder="Buscar proveedores..."
-          className="max-w-sm"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
       </div>
 
       <DataTable columns={columns} data={providers} isLoading={isLoading} />

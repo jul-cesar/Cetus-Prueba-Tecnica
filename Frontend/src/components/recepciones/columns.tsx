@@ -14,16 +14,20 @@ export const columns: ColumnDef<Recepcion>[] = [
     },
   },
   {
+    id: "prodName",
     accessorKey: "producto.nombre",
     header: "Producto",
+    accessorFn: (row) => row.producto?.nombre || "N/A",
   },
   {
+    id: "proveedorName",
     accessorKey: "proveedor.nombre",
     header: "Proveedor",
+    accessorFn: (row) => row.proveedor?.nombre || "N/A",
   },
   {
     accessorKey: "registroINVIMA",
-    header: "No. Factura",
+    header: "INVIMA",
   },
   {
     accessorKey: "cantidad",

@@ -84,6 +84,9 @@ export function ProductDialog({
       onOpenChange(false);
       form.reset();
     },
+    onError: (error: any) => {
+      toast.error(`Error al crear el producto: ${error}`);
+    },
   });
 
   const { mutate: updateProductMutation, isPending: isUpdating } = useMutation({

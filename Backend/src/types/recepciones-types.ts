@@ -8,3 +8,5 @@ export type Recepcion = Prisma.RecepcionGetPayload<{
 }>
 
 export type InsertRecepcion = Omit<Recepcion, "id" | "fechaHora" | "proveedor" | "producto">
+
+export type UpdateRecepcion = Omit<Recepcion, "id" | "fechaHora" | "proveedor" | "producto"> 

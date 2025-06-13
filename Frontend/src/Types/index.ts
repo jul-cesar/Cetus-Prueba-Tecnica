@@ -58,4 +58,12 @@ export type Recepcion = {
 export type InsertRecepcion = Omit<
   Recepcion,
   "id" | "fechaHora" | "proveedor" | "producto"
-  >;
+>;
+
+export type DashboardStats = {
+  totalActiveProducts: number;
+  totalProducts: number;
+  totalRecepciones: number;
+  totalProveedores: number;
+  totalActiveProveedores: number;
+};

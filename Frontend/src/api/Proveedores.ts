@@ -18,7 +18,8 @@ export const createProveedor = async (proveedor: InsertProveedor) => {
     body: JSON.stringify(proveedor),
   });
     if (!response.ok) {
-        throw new Error("Error creating proveedor");
+        const error = await response.json();
+        throw new Error(error.error || "Error creating proveedor");
     }
     return response.json();
 }
