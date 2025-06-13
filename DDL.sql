@@ -79,6 +79,17 @@ ALTER TABLE "Recepcion" ADD CONSTRAINT "Recepcion_proveedorId_fkey" FOREIGN KEY 
 -- Enlaza la tabla Recepcion con la tabla Producto.
 ALTER TABLE "Recepcion" ADD CONSTRAINT "Recepcion_productoId_fkey" FOREIGN KEY ("productoId") REFERENCES "Producto"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
+
+INSERT INTO "Producto" ("id", "codigo", "nombre", "descripcion", "estado", "nombreLaboratorio") VALUES
+('58b737a7-a6a4-4ab7-bcdd-ab8dd958b054', 'PROD-001', 'Acetaminofén 500mg Caja x20', 'Analgésico y antipirético para el alivio del dolor y la fiebre.', 'Activo', 'Genfar'),
+('bdbd5f61-35b8-4dcb-9991-3a95875f56c6', 'PROD-002', 'Ibuprofeno 800mg Caja x30', 'Antiinflamatorio no esteroideo (AINE) para dolores fuertes.', 'Activo', 'MK'),
+('8067f8a9-c231-44d0-84f7-7aa6deb476ba', 'PROD-003', 'Loratadina 10mg Caja x10', 'Antihistamínico para el tratamiento de la rinitis alérgica.', 'Activo', 'La Santé'),
+('079f2963-3e4f-4a96-8cd4-81e43583c785', 'PROD-004', 'Amoxicilina 500mg Suspensión', 'Antibiótico de amplio espectro. Producto descontinuado.', 'Inactivo', 'GSK');
+
+
+
+
+
 -- #####################################################################
 -- FIN DEL SCRIPT DDL
 -- #####################################################################
