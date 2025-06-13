@@ -8,8 +8,8 @@ import {
 } from "../services/productos-service.js";
 import type { InsertProducto } from "../types/productos-types.js";
 
-const productRoute = new Hono();
-productRoute.basePath("/productos");
+export const productRoute = new Hono();
+
 
 productRoute.get("/", async (c) => {
   try {

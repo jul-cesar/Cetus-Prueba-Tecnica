@@ -6,11 +6,9 @@ import type {
 } from "../types/productos-types.js";
 import type { Response } from "../types/response.js";
 
-
-
 export const getAllProducts = async (): Promise<Response<Producto[]>> => {
   const productos = await prisma.producto.findMany({});
-  if (!productos) {
+  if (!productos || productos.length === 0) {
     return {
       success: false,
       message: "No products found",

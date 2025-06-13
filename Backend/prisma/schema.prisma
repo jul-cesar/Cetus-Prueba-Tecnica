@@ -15,7 +15,7 @@ enum TipoIdentificacion {
   NIT_EXTRANJERIA
 }
 
-enum EstadoProducto {
+enum Estado {
   Activo
   Inactivo
 }
@@ -28,29 +28,30 @@ model Proveedor {
   direccion            String
   nombreContacto       String
   celularContacto      String
+  estado               Estado             @default(Activo)
   recepciones          Recepcion[]
 }
 
 model Producto {
-  id                String         @id @default(uuid())
-  codigo            String         @unique
+  id                String      @id @default(uuid())
+  codigo            String      @unique
   nombre            String
   descripcion       String
-  estado            EstadoProducto @default(Activo)
+  estado            Estado      @default(Activo)
   nombreLaboratorio String
   recepciones       Recepcion[]
 }
 
 model Recepcion {
-  id                        String   @id @default(uuid())
-  fechaHora                 DateTime @default(now())
+  id                        String    @id @default(uuid())
+  fechaHora                 DateTime  @default(now())
   cantidad                  Int
   lote                      String
   registroINVIMA            String
   fechaVencimiento          DateTime
   productoEstadoDescripcion String
-  proveedorId String
-  proveedor Proveedor @relation(fields: [proveedorId], references: [id])
-  productoId String
-  producto Producto @relation(fields: [productoId], references: [id])
+  proveedorId               String
+  proveedor                 Proveedor @relation(fields: [proveedorId], references: [id])
+  productoId                String
+  producto                  Producto  @relation(fields: [productoId], references: [id])
 }
