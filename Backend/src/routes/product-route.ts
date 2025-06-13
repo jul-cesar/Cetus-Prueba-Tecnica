@@ -8,10 +8,9 @@ import {
   updateProduct,
 } from "../services/productos-service.js";
 import type { InsertProducto } from "../types/productos-types.js";
-import { productValidator } from "../validators/prodcutos-validator.js";
+import { productValidator } from "../validators/productos-validator.js";
 
 export const productRoute = new Hono();
-
 
 productRoute.get("/", async (c) => {
   try {
@@ -21,9 +20,12 @@ productRoute.get("/", async (c) => {
     }
     return c.json(productos.data, 200);
   } catch (error) {
-      const prismaError = handlePrismaError(error);
-      console.error("Error trayendo productos:", prismaError);
-      return c.json({ error: prismaError, message: "Error al obtener los productos" }, 500);
+    const prismaError = handlePrismaError(error);
+    console.error("Error trayendo productos:", prismaError);
+    return c.json(
+      { error: prismaError, message: "Error al obtener los productos" },
+      500
+    );
   }
 });
 
@@ -38,7 +40,10 @@ productRoute.get("/:id", async (c) => {
   } catch (error) {
     const prismaError = handlePrismaError(error);
     console.error("Error trayendo producto:", prismaError);
-    return c.json({ error: prismaError, message: "Error al obtener el producto" }, 500);
+    return c.json(
+      { error: prismaError, message: "Error al obtener el producto" },
+      500
+    );
   }
 });
 
@@ -53,7 +58,10 @@ productRoute.post("/", productValidator, async (c) => {
   } catch (error) {
     const prismaError = handlePrismaError(error);
     console.error("Error creando producto:", prismaError);
-    return c.json({ error: prismaError, message: "Error al crear el producto" }, 500);
+    return c.json(
+      { error: prismaError, message: "Error al crear el producto" },
+      500
+    );
   }
 });
 
@@ -70,26 +78,36 @@ productRoute.put("/:id", async (c) => {
     console.error("Error actualizando producto:", error);
     const prismaError = handlePrismaError(error);
     console.error("Error actualizando producto:", prismaError);
-    return c.json({ error: prismaError, message: "Error al actualizar el producto" }, 500);
+    return c.json(
+      { error: prismaError, message: "Error al actualizar el producto" },
+      500
+    );
   }
 });
 
 productRoute.patch("/:id/toggle-status", async (c) => {
   const id = c.req.param("id");
   try {
-    
     const updatedProduct = await ToggleProductStatus(id);
     if (!updatedProduct.success) {
       return c.json({ error: updatedProduct.message }, 404);
     }
-    return c.json({ message: "Estado del producto actualizado correctamente" }, 200);
+    return c.json(
+      { message: "Estado del producto actualizado correctamente" },
+      200
+    );
   } catch (error) {
     const prismaError = handlePrismaError(error);
     console.error("Error actualizando estado del producto:", prismaError);
-    return c.json({ error: prismaError, message: "Error al actualizar el estado del producto" }, 500);
+    return c.json(
+      {
+        error: prismaError,
+        message: "Error al actualizar el estado del producto",
+      },
+      500
+    );
   }
-}
-);
+});
 
 productRoute.delete("/:id", async (c) => {
   const id = c.req.param("id");
@@ -102,6 +120,9 @@ productRoute.delete("/:id", async (c) => {
   } catch (error) {
     const prismaError = handlePrismaError(error);
     console.error("Error eliminando producto:", prismaError);
-    return c.json({ error: prismaError, message: "Error al eliminar el producto" }, 500);
+    return c.json(
+      { error: prismaError, message: "Error al eliminar el producto" },
+      500
+    );
   }
 });
