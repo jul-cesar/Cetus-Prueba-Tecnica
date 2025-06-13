@@ -8,6 +8,7 @@ import {
   updateProduct,
 } from "../services/productos-service.js";
 import type { InsertProducto } from "../types/productos-types.js";
+import { productValidator } from "../validators/prodcutos-validator.js";
 
 export const productRoute = new Hono();
 
@@ -41,7 +42,7 @@ productRoute.get("/:id", async (c) => {
   }
 });
 
-productRoute.post("/", async (c) => {
+productRoute.post("/", productValidator, async (c) => {
   try {
     const productData: InsertProducto = await c.req.json();
     const newProduct = await createProduct(productData);
