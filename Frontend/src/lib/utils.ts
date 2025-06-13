@@ -6,5 +6,5 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 
-export const API_URL = "https://celtus-prueba-back.vercel.app/api/v1";
-// export const API_URL =  "http://localhost:3000/api/v1";
+// export const API_URL = "https://celtus-prueba-back.vercel.app/api/v1";
+export const API_URL =  "http://localhost:3001/api/v1";  // docker backend url
