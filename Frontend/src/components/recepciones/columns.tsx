@@ -30,6 +30,16 @@ export const columns: ColumnDef<Recepcion>[] = [
     header: "INVIMA",
   },
   {
+    accessorKey: "numeroFactura",
+    header: "Factura",
+  },
+  {
+    id: "estadoProducto",
+    accessorKey: "productoEstadoDescripcion",
+    header: "Estado del Producto",
+    accessorFn: (row) => row.producto?.estado || "N/A",
+  },
+  {
     accessorKey: "cantidad",
     header: "Cantidad",
   },

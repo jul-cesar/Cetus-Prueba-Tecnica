@@ -51,6 +51,7 @@ const receptionSchema = z.object({
   productId: z.string().min(1, "El producto es requerido"),
   providerId: z.string().min(1, "El proveedor es requerido"),
   invoiceNumber: z.string().min(1, "El número de factura es requerido"),
+
   quantity: z.coerce.number().positive("La cantidad debe ser mayor a 0"),
   batch: z.string().min(1, "El lote es requerido"),
   invimaRegistration: z.string().min(1, "El registro INVIMA es requerido"),
@@ -137,7 +138,7 @@ export function ReceptionDialog({
         id: reception.id,
         proveedorId: data.providerId,
         productoId: data.productId,
-
+        numeroFactura: data.invoiceNumber,
         cantidad: data.quantity,
         lote: data.batch,
         registroINVIMA: data.invimaRegistration,
@@ -148,6 +149,7 @@ export function ReceptionDialog({
       createReceptionMutation({
         cantidad: data.quantity,
         lote: data.batch,
+        numeroFactura: data.invoiceNumber,
         fechaVencimiento: data.expirationDate,
         registroINVIMA: data.invimaRegistration,
         productoEstadoDescripcion: data.presentationState,
@@ -316,6 +318,10 @@ export function ReceptionDialog({
                         onSelect={field.onChange}
                         disabled={(date) => date < new Date()}
                         initialFocus
+                        captionLayout="dropdown-years"
+                        fromYear={new Date().getFullYear()}
+                        toYear={new Date().getFullYear() + 10}
+                        showOutsideDays={false}
                       />
                     </PopoverContent>
                   </Popover>

@@ -31,14 +31,14 @@ export function ProviderActions({ provider }: ProviderActionsProps) {
       return toggleProveedorStatus(id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["proveedores"] });
+      queryClient.invalidateQueries({ queryKey: ["providers"] });
       toast("El proveedor ha sido desactivado correctamente");
     },
   });
 
   const handleToggleStatus = () => {
     toggleProviderStatusMutation(provider.id);
-    queryClient.invalidateQueries({ queryKey: ["proveedores"] });
+    queryClient.invalidateQueries({ queryKey: ["providers"] });
   };
 
   return (

@@ -11,7 +11,7 @@ export default function ProvidersPage() {
   const [open, setOpen] = useState(false);
 
   const { data: providers = [], isLoading } = useQuery({
-    queryKey: ["proveedores"],
+    queryKey: ["providers"],
     queryFn: () => getProveedores(),
   });
 

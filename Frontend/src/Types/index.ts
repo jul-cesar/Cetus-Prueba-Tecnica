@@ -48,6 +48,7 @@ export type Recepcion = {
   lote: string;
   registroINVIMA: string;
   fechaVencimiento: Date;
+  numeroFactura: string;
   productoEstadoDescripcion: string;
   proveedorId: string;
   productoId: string;

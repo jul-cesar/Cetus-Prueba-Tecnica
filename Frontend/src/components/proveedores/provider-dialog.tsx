@@ -38,7 +38,6 @@ const providerSchema = z.object({
     "CEDULA",
     "NIT",
     "CEDULA_EXTRANJERIA",
-
     "NIT_EXTRANJERIA",
   ]),
   identificationNumber: z
@@ -166,10 +165,14 @@ export function ProviderDialog({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="CC">Cédula</SelectItem>
+                        <SelectItem value="CEDULA">Cédula</SelectItem>
                         <SelectItem value="NIT">NIT</SelectItem>
-                        <SelectItem value="CE">C. Extranjería</SelectItem>
-                        <SelectItem value="NE">NIT Extranjería</SelectItem>
+                        <SelectItem value="CEDULA_EXTRANJERIA">
+                          C. Extranjería
+                        </SelectItem>
+                        <SelectItem value="NIT_EXTRANJERIA">
+                          NIT Extranjería
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

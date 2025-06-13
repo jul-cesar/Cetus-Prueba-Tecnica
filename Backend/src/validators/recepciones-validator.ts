@@ -5,6 +5,7 @@ const createRecepcionSchema = z.object({
   cantidad: z.number().positive("La cantidad debe ser un número positivo"),
   lote: z.string().min(1, "El lote es requerido"),
   registroINVIMA: z.string().min(1, "El registro INVIMA es requerido"),
+  numeroFactura: z.string().min(1, "El número de factura es requerido"),
   fechaVencimiento: z.coerce.date({
     errorMap: () => ({
       message: "La fecha de vencimiento debe ser una fecha válida",

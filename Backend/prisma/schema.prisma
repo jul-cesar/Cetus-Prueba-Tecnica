@@ -48,6 +48,7 @@ model Recepcion {
   fechaHora                 DateTime  @default(now())
   cantidad                  Int
   lote                      String
+  numeroFactura             String
   registroINVIMA            String
   fechaVencimiento          DateTime
   productoEstadoDescripcion String
