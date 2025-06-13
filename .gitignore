@@ -1,0 +1,7 @@
+Backend/node_modules/
+Backend/.env
+Backend/src/generated/prisma
+Backend/dist/
+Backcend/.DS_Store
+Backend/.idea/
+Backend/.vscode/

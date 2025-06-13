@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TipoIdentificacion {
+  CEDULA
+  NIT
+  CEDULA_EXTRANJERIA
+  NIT_EXTRANJERIA
+}
+
+enum EstadoProducto {
+  Activo
+  Inactivo
+}
+
+model Proveedor {
+  id                   String             @id @default(uuid())
+  tipoIdentificacion   TipoIdentificacion
+  numeroIdentificacion String             @unique
+  nombre               String
+  direccion            String
+  nombreContacto       String
+  celularContacto      String
+  recepciones          Recepcion[]
+}
+
+model Producto {
+  id                String         @id @default(uuid())
+  codigo            String         @unique
+  nombre            String
+  descripcion       String
+  estado            EstadoProducto @default(Activo)
+  nombreLaboratorio String
+  recepciones       Recepcion[]
+}
+
+model Recepcion {
+  id                        String   @id @default(uuid())
+  fechaHora                 DateTime @default(now())
+  cantidad                  Int
+  lote                      String
+  registroINVIMA            String
+  fechaVencimiento          DateTime
+  productoEstadoDescripcion String
+  proveedorId String
+  proveedor Proveedor @relation(fields: [proveedorId], references: [id])
+  productoId String
+  producto Producto @relation(fields: [productoId], references: [id])
+}
